@@ -72,7 +72,7 @@ public class BookController {
     // Метод обробки HTTP POST-запиту для створення нової операції (оренди) книги.
     // Він приймає дані з форми, зберігає обкладинку та оновлює книгу в репозиторії.
     @PostMapping("/book/save")
-    String createNewOperation(@RequestParam("coverImage") MultipartFile file, @ModelAttribute("book") Book book) throws IOException {
+    public String createNewOperation(@RequestParam("coverImage") MultipartFile file, @ModelAttribute("book") Book book) throws IOException {
         book.setImage(file.getBytes());
         bookRepository.save(book);
 

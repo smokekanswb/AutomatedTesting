@@ -25,7 +25,7 @@ public class OperationsOnBooksController {
     // Використовує об'єкт, отриманий з форми на сторінці, та зберігає його в репозиторії.
     // Встановлює дату видачі як поточну дату.
     @PostMapping("/operations/save")
-    String createNewOperation(@ModelAttribute("operation") OperationsOnBooks operationsOnBooks) {
+    public String createNewOperation(@ModelAttribute("operation") OperationsOnBooks operationsOnBooks) {
         // Встановлюємо дату видачі як поточну дату.
         operationsOnBooks.setIssueDate(Date.valueOf(LocalDate.now()));
 
