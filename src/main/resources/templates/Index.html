@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>E-books</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/styles/books.css">
+    <link rel="stylesheet" type="text/css" href="/styles/chat.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/chat.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+    <h1>E-books</h1>
+    <h1>A convenient library for you</h1>
+    <p>You can choose the books you are interested in and rent them here!</p>
+    <a class="btn btn-secondary" href="/">Home</a>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Add">
+        Add book
+    </button>
+    <a class="btn btn-secondary" href="/logout">Logout</a>
+</div>
+
+<div class="container-fluid p-3 my-3 bg-dark text-white">
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <!-- Перша форма -->
+            <form method="post" action="/search">
+                <div class="d-flex">
+                    <input type="text" id="keyword" name="keyword" class="form-control"
+                           placeholder="Search books by title/author/genre">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 text-right">
+            <!-- Друга форма -->
+            <form class="form-group d-flex align-items-center" th:action="@{/books}" method="get">
+                <select class="form-control" name="sortBy">
+                    <option value="title">Title</option>
+                    <option value="author">Author</option>
+                    <option value="genre">Genre</option>
+                    <option value="yearOfPublication">Date of publication</option>
+                    <option value="NumberOfCopies">Number of copies available</option>
+                </select>
+                <button type="submit" class="btn btn-secondary">Sort</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div th:each="book : ${books}" class="col-md-4">
+        <div class="book">
+            <img th:src="@{|data:image/jpeg;base64,${book.image}|}" alt="Poster">
+            <div class="book-info">
+                <a th:href="@{/book/(bookId=${book.id})}">
+                    <h2 th:text="${book.title}"></h2>
+                </a>
+                <p th:text="${book.author}"></p>
+                <h6>Genre of book:<p th:text="${book.genre}"></p></h6>
+                <h6>Date of publication:<p th:text="${book.yearOfPublication}"></p></h6>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="Add">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">New book</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="POST" th:action="@{/book/save}" enctype="multipart/form-data"
+                      class="needs-validation" novalidate>
+                    <div class="form-group">
+                        <label for="title" class="form-label">Enter title: </label>
+                        <input type="text" name="title" id="title" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="author" class="form-label">Enter author: </label>
+                        <input type="text" name="author" id="author" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="genre" class="form-label">Enter genre: </label>
+                        <input type="text" name="genre" id="genre" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="NumberOfCopies" class="form-label">Enter number of copies: </label>
+                        <input type="number" name="NumberOfCopies" id="NumberOfCopies" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="form-label">Enter description: </label>
+                        <textarea type="text" name="description" id="description" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="yearOfPublication" class="form-label">Enter publication date: </label>
+                        <input type="date" name="yearOfPublication" id="yearOfPublication" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="coverImage" class="form-label">Load cover art: </label>
+                        <input type="file" name="coverImage" id="coverImage" class="form-control"/>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add book</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+

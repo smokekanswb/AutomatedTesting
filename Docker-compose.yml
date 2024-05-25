@@ -1,0 +1,25 @@
+version: '3.0'
+
+services:
+  postgres:
+    image: postgres
+    container_name: e-books-postgres
+    environment:
+      POSTGRES_PASSWORD: postgress
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:\postgresql
+  e-books:
+    build: .
+    container_name: E-books
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgress
+    depends_on:
+      - postgres
+
